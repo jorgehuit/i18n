@@ -1,5 +1,7 @@
 package com.example.demo.service.impl;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,7 +10,8 @@ import com.example.demo.model.User;
 import com.example.demo.respository.UserRepository;
 import com.example.demo.service.UserService;
 
-@Service
+@Service("userServiceImpl")
+@Transactional
 public class UserServiceImpl implements UserService {
 
 	@Autowired
