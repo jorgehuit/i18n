@@ -9,14 +9,10 @@ import com.axa.condiciones.businessLayer.UserBusiness;
 import com.axa.condiciones.model.dto.MessageDTO;
 import com.axa.condiciones.model.dto.UserDTO;
 import com.axa.condiciones.model.entities.User;
-import com.axa.condiciones.persistenceLayer.UserRepository;
 
 @Service("userServiceImpl")
 @Transactional
 public class UserServiceImpl implements UserService {
-
-	@Autowired
-	private UserRepository userRepository;
 	
 	@Autowired
 	private UserBusiness userBusiness;
