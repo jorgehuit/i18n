@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.axa.condiciones.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

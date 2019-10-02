@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.axa.condiciones.model.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

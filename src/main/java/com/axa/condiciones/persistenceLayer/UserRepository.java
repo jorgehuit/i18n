@@ -1,10 +1,10 @@
-package com.example.demo.respository;
+package com.axa.condiciones.persistenceLayer;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import com.example.demo.model.User;
+import com.axa.condiciones.model.entities.User;
 
 public interface UserRepository extends CrudRepository<User, Long> {
 	public User findByAp(String ap);
