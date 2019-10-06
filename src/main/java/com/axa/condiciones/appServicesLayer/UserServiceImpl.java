@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.axa.condiciones.businessLayer.UserBusiness;
+import com.axa.condiciones.common.GenericException;
 import com.axa.condiciones.model.dto.MessageDTO;
 import com.axa.condiciones.model.dto.UserDTO;
 import com.axa.condiciones.model.entities.User;
@@ -41,6 +42,12 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		return response;
+	}
+
+	@Override
+	public UserDTO getInfoUser(String app) throws GenericException {
+		
+		return userBusiness.getInfoUser(app);
 	}
 
 }
