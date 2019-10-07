@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.axa.condiciones.appServicesLayer.UserService;
+import com.axa.condiciones.client.Aggregator;
 import com.axa.condiciones.common.GenericException;
 import com.axa.condiciones.model.dto.MessageDTO;
 import com.axa.condiciones.model.dto.UserDTO;
@@ -24,6 +25,9 @@ import lombok.extern.log4j.Log4j;
 @RestController
 @Log4j
 public class UserController {
+	
+	@Autowired
+	private Aggregator aggregator;
 	
 	@Autowired
 	private MessageSource messageSource;
@@ -37,6 +41,13 @@ public class UserController {
 	@GetMapping(value = "/getInfoVersion")
 	public ResponseEntity<MessageDTO> getInfoVersion(){
 		return new ResponseEntity<MessageDTO>(new MessageDTO(buildProperties.getVersion()), HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/getResponseClientRest")
+	public ResponseEntity<MessageDTO> getResponseClientRest(){
+		MessageDTO messageDTO = new MessageDTO();
+		messageDTO.setMsg(aggregator.getHello().getDataApi() + ", ahora ya consumido...");
+		return new ResponseEntity<MessageDTO>(messageDTO, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/api")
