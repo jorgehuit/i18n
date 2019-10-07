@@ -13,4 +13,5 @@ public interface UserBusiness {
 	public MessageDTO save(UserDTO userDTO);
 
 	public UserDTO getInfoUser(String app) throws GenericException;
+	
 }

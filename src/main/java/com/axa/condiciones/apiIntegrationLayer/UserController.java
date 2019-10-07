@@ -1,5 +1,7 @@
 package com.axa.condiciones.apiIntegrationLayer;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.MessageSource;
@@ -14,11 +16,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.axa.condiciones.appServicesLayer.ExecutionContext;
 import com.axa.condiciones.appServicesLayer.UserService;
-import com.axa.condiciones.client.Aggregator;
 import com.axa.condiciones.common.GenericException;
 import com.axa.condiciones.model.dto.MessageDTO;
 import com.axa.condiciones.model.dto.UserDTO;
+import com.axa.condiciones.retry.UserRetry;
 
 import lombok.extern.log4j.Log4j;
 
@@ -27,13 +30,13 @@ import lombok.extern.log4j.Log4j;
 public class UserController {
 	
 	@Autowired
-	private Aggregator aggregator;
-	
-	@Autowired
 	private MessageSource messageSource;
 	
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private UserRetry userRetry;
 	
 	@Autowired
 	private BuildProperties buildProperties; 
@@ -43,10 +46,18 @@ public class UserController {
 		return new ResponseEntity<MessageDTO>(new MessageDTO(buildProperties.getVersion()), HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/getResponseClientRest")
+	@GetMapping(value = "/getRemoteService")
 	public ResponseEntity<MessageDTO> getResponseClientRest(){
 		MessageDTO messageDTO = new MessageDTO();
-		messageDTO.setMsg(aggregator.getHello().getDataApi() + ", ahora ya consumido...");
+		messageDTO.setMsg(userService.getRemoteService().getDataApi() + ", ahora ya consumido...");
+		return new ResponseEntity<MessageDTO>(messageDTO, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/getTryService")
+	public ResponseEntity<MessageDTO> getTryService(){
+		log.info("Entra a controller /getTryService");
+		MessageDTO messageDTO = new MessageDTO();
+		messageDTO.setMsg(userRetry.getRemoteBackendResponse() + ", ahora ya consumido desde Spring Retry...");
 		return new ResponseEntity<MessageDTO>(messageDTO, HttpStatus.OK);
 	}
 	
@@ -81,9 +92,12 @@ public class UserController {
 	
 	@GetMapping(value = "/getInfoUser/{app}")
 	public ResponseEntity<UserDTO> getInfoUser(@PathVariable("app") String app){
+		
+		 //TODO: poner en una constante
 		UserDTO userDto = null;
 		try {
-			userDto = userService.getInfoUser(app);
+			ExecutionContext exc = new ExecutionContext(UUID.randomUUID(), "DEMOUSER", "getInfoUser");
+			userDto = userService.getInfoUser(app, exc);
 		} catch (GenericException e) {
 			log.error("Error al obtener información del usuario " + app, e);
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id Incorrect.", e);

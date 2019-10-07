@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.axa.condiciones.businessLayer.UserBusiness;
+import com.axa.condiciones.client.Aggregator;
 import com.axa.condiciones.common.GenericException;
+import com.axa.condiciones.model.dto.DataRestClient;
 import com.axa.condiciones.model.dto.MessageDTO;
 import com.axa.condiciones.model.dto.UserDTO;
 import com.axa.condiciones.model.entities.User;
@@ -17,6 +19,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private UserBusiness userBusiness;
+	
+	@Autowired
+	private Aggregator aggregator;
 	
 	@Override
 	public MessageDTO save(UserDTO userDTO) {
@@ -48,6 +53,12 @@ public class UserServiceImpl implements UserService {
 	public UserDTO getInfoUser(String app) throws GenericException {
 		
 		return userBusiness.getInfoUser(app);
+	}
+
+	@Override
+	public DataRestClient getRemoteService() {
+		
+		return new DataRestClient(aggregator.getHello().getDataApi());
 	}
 
 }

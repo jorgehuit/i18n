@@ -71,6 +71,4 @@ public class UserBusinessImpl implements UserBusiness {
 		return userEntity;
 	}
 
-	
-
 }
