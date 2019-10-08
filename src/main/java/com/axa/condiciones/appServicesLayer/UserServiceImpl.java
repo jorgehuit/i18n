@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.axa.condiciones.businessLayer.UserBusiness;
-import com.axa.condiciones.client.Aggregator;
 import com.axa.condiciones.common.GenericException;
-import com.axa.condiciones.model.dto.DataRestClient;
 import com.axa.condiciones.model.dto.MessageDTO;
 import com.axa.condiciones.model.dto.UserDTO;
 import com.axa.condiciones.model.entities.User;
@@ -20,9 +18,6 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserBusiness userBusiness;
 	
-	@Autowired
-	private Aggregator aggregator;
-	
 	@Override
 	public MessageDTO save(UserDTO userDTO) {
 		MessageDTO reponse = null;
@@ -30,7 +25,7 @@ public class UserServiceImpl implements UserService {
 		if(user == null) {	
 			userBusiness.save(userDTO);
 			reponse = new MessageDTO();
-			reponse.setMsg("Sucess");
+			reponse.setDataApi("Sucess");
 			
 		}
 		
@@ -43,22 +38,16 @@ public class UserServiceImpl implements UserService {
 		MessageDTO responseBusiness = userBusiness.getAp(ap);
 		if(responseBusiness != null) {
 			response = new MessageDTO();
-			response.setMsg(responseBusiness.getMsg());
+			response.setDataApi(responseBusiness.getDataApi());
 		}
 		
 		return response;
 	}
 
 	@Override
-	public UserDTO getInfoUser(String app) throws GenericException {
+	public UserDTO getInfoUser(String app, ExecutionContext exc) throws GenericException {
 		
-		return userBusiness.getInfoUser(app);
-	}
-
-	@Override
-	public DataRestClient getRemoteService() {
-		
-		return new DataRestClient(aggregator.getHello().getDataApi());
+		return userBusiness.getInfoUser(app, exc);
 	}
 
 }

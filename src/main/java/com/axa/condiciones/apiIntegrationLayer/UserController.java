@@ -1,7 +1,5 @@
 package com.axa.condiciones.apiIntegrationLayer;
 
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.MessageSource;
@@ -19,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.axa.condiciones.appServicesLayer.ExecutionContext;
 import com.axa.condiciones.appServicesLayer.UserService;
 import com.axa.condiciones.common.GenericException;
+import com.axa.condiciones.common.UtilService;
 import com.axa.condiciones.model.dto.MessageDTO;
 import com.axa.condiciones.model.dto.UserDTO;
 import com.axa.condiciones.retry.UserRetry;
@@ -29,6 +28,8 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class UserController {
 	
+	private static final String DEMOUSER = "DEMOUSER";
+
 	@Autowired
 	private MessageSource messageSource;
 	
@@ -46,18 +47,11 @@ public class UserController {
 		return new ResponseEntity<MessageDTO>(new MessageDTO(buildProperties.getVersion()), HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/getRemoteService")
-	public ResponseEntity<MessageDTO> getResponseClientRest(){
-		MessageDTO messageDTO = new MessageDTO();
-		messageDTO.setMsg(userService.getRemoteService().getDataApi() + ", ahora ya consumido...");
-		return new ResponseEntity<MessageDTO>(messageDTO, HttpStatus.OK);
-	}
-
 	@GetMapping(value = "/getTryService")
 	public ResponseEntity<MessageDTO> getTryService(){
 		log.info("Entra a controller /getTryService");
 		MessageDTO messageDTO = new MessageDTO();
-		messageDTO.setMsg(userRetry.getRemoteBackendResponse() + ", ahora ya consumido desde Spring Retry...");
+		messageDTO.setDataApi(userRetry.getRemoteBackendResponse() + ", ahora ya consumido desde Spring Retry...");
 		return new ResponseEntity<MessageDTO>(messageDTO, HttpStatus.OK);
 	}
 	
@@ -67,7 +61,7 @@ public class UserController {
 		MessageDTO responseService = userService.getAp(ap);
 		String message = null;
 		if(responseService != null) {
-			message = messageSource.getMessage("welcome.user", new String[]{responseService.getMsg()}, LocaleContextHolder.getLocale());
+			message = messageSource.getMessage("welcome.user", new String[]{responseService.getDataApi()}, LocaleContextHolder.getLocale());
 			
 		}else {
 			message = messageSource.getMessage("user.not.found", null, LocaleContextHolder.getLocale());
@@ -92,14 +86,12 @@ public class UserController {
 	
 	@GetMapping(value = "/getInfoUser/{app}")
 	public ResponseEntity<UserDTO> getInfoUser(@PathVariable("app") String app){
-		
-		 //TODO: poner en una constante
 		UserDTO userDto = null;
+		ExecutionContext executionContext = new ExecutionContext(DEMOUSER,"/getInfoUser/{app}");
 		try {
-			ExecutionContext exc = new ExecutionContext(UUID.randomUUID(), "DEMOUSER", "getInfoUser");
-			userDto = userService.getInfoUser(app, exc);
+			userDto = userService.getInfoUser(app, executionContext);
 		} catch (GenericException e) {
-			log.error("Error al obtener información del usuario " + app, e);
+			log.error(UtilService.getExecutionContextLog( executionContext ), e);
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id Incorrect.", e);
 		}
 		return new ResponseEntity<UserDTO>(userDto, HttpStatus.OK);
