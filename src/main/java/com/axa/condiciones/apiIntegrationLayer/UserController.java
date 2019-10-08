@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.axa.condiciones.appServicesLayer.UserService;
-import com.axa.condiciones.common.ExternalCallException;
+import com.axa.condiciones.common.GenericException;
 import com.axa.condiciones.common.UtilService;
 import com.axa.condiciones.model.dto.ExecutionContextDTO;
 import com.axa.condiciones.model.dto.MessageDTO;
@@ -96,7 +96,7 @@ public class UserController {
 		ExecutionContextDTO executionContext = new ExecutionContextDTO(DEMOUSER,"/getInfoUser/{app}");
 		try {
 			userDto = userService.getInfoUser(app, executionContext);
-		} catch (ExternalCallException e) {
+		} catch (GenericException e) {
 			log.error(UtilService.getExecutionContextLog( executionContext ), e);
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id Incorrect.", e);
 		}
