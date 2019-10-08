@@ -1,7 +1,7 @@
 package com.axa.condiciones.businessLayer;
 
-import com.axa.condiciones.appServicesLayer.ExecutionContext;
 import com.axa.condiciones.common.GenericException;
+import com.axa.condiciones.model.dto.ExecutionContextDTO;
 import com.axa.condiciones.model.dto.MessageDTO;
 import com.axa.condiciones.model.dto.UserDTO;
 import com.axa.condiciones.model.entities.User;
@@ -13,6 +13,6 @@ public interface UserBusiness {
 
 	public MessageDTO save(UserDTO userDTO);
 
-	public UserDTO getInfoUser(String app, ExecutionContext exc) throws GenericException;
+	public UserDTO getInfoUser(String app, ExecutionContextDTO exc) throws GenericException;
 	
 }

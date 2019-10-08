@@ -3,8 +3,8 @@ package com.axa.condiciones.businessLayer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.axa.condiciones.appServicesLayer.ExecutionContext;
 import com.axa.condiciones.common.GenericException;
+import com.axa.condiciones.model.dto.ExecutionContextDTO;
 import com.axa.condiciones.model.dto.MessageDTO;
 import com.axa.condiciones.model.dto.UserDTO;
 import com.axa.condiciones.model.entities.User;
@@ -45,7 +45,7 @@ public class UserBusinessImpl implements UserBusiness {
 	}
 	
 	@Override
-	public UserDTO getInfoUser(String app, ExecutionContext exc) throws GenericException{
+	public UserDTO getInfoUser(String app, ExecutionContextDTO exc) throws GenericException{
 		User findByAp = userRepository.findByAp(app);
 		if(findByAp == null) {
 			throw new GenericException("Id not fouund");

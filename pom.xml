@@ -9,12 +9,12 @@
 		<version>2.1.9.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
-	<artifactId>demo</artifactId>
+	<groupId>com.axa.condiciones</groupId>
+	<artifactId>api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>demo</name>
-	<description>Demo project for Spring Boot</description>
+	<name>condiciones</name>
+	<description>Contiene proyecto de condiciones de auto</description>
 
 	<properties>
 		<java.version>1.8</java.version>
