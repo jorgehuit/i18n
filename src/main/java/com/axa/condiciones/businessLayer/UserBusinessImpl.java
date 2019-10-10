@@ -7,7 +7,7 @@ import com.axa.condiciones.common.GenericException;
 import com.axa.condiciones.model.dto.ExecutionContextDTO;
 import com.axa.condiciones.model.dto.MessageDTO;
 import com.axa.condiciones.model.dto.UserDTO;
-import com.axa.condiciones.model.entities.User;
+import com.axa.condiciones.model.entities.UserExa;
 import com.axa.condiciones.persistenceLayer.UserRepository;
 
 @Service
@@ -19,7 +19,7 @@ public class UserBusinessImpl implements UserBusiness {
 	@Override
 	public MessageDTO getAp(String ap) {
 		MessageDTO messageDTO = null;
-		User user = userRepository.findByAp(ap);
+		UserExa user = userRepository.findByAp(ap);
 		if(user != null) {
 			messageDTO = new MessageDTO();
 			messageDTO.setDataApi(user.getUsername());
@@ -28,14 +28,14 @@ public class UserBusinessImpl implements UserBusiness {
 	}
 
 	@Override
-	public User findByApUsernameAddress(String ap, String username, String address) {
+	public UserExa findByApUsernameAddress(String ap, String username, String address) {
 		return userRepository.findByApUsernameAddress(ap, username, address);
 	}
 
 	@Override
 	public MessageDTO save(UserDTO userDTO) {
 		MessageDTO response = null;
-		User user = userRepository.save(createEntity(userDTO));
+		UserExa user = userRepository.save(createEntity(userDTO));
 		if(user != null) {
 			response = new MessageDTO();
 			response.setDataApi("Created");
@@ -46,14 +46,14 @@ public class UserBusinessImpl implements UserBusiness {
 	
 	@Override
 	public UserDTO getInfoUser(String app, ExecutionContextDTO exc) throws GenericException{
-		User findByAp = userRepository.findByAp(app);
+		UserExa findByAp = userRepository.findByAp(app);
 		if(findByAp == null) {
 			throw new GenericException("Id not fouund");
 		}
 		return mapFromUserEntityToUserDTO(findByAp);
 	}
 	
-	private UserDTO mapFromUserEntityToUserDTO(User findByAp) {
+	private UserDTO mapFromUserEntityToUserDTO(UserExa findByAp) {
 		UserDTO userDTO = new UserDTO();
 		userDTO.setAddress(findByAp.getAddress());
 		userDTO.setAp(findByAp.getAp());
@@ -63,8 +63,8 @@ public class UserBusinessImpl implements UserBusiness {
 		return userDTO;
 	}
 
-	private User createEntity(UserDTO userDTO) {
-		User userEntity = new User();
+	private UserExa createEntity(UserDTO userDTO) {
+		UserExa userEntity = new UserExa();
 		userEntity.setAddress(userDTO.getAddress());
 		userEntity.setAp(userDTO.getAp());
 		userEntity.setEmail(userDTO.getEmail());

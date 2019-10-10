@@ -10,7 +10,7 @@ import com.axa.condiciones.common.GenericException;
 import com.axa.condiciones.model.dto.ExecutionContextDTO;
 import com.axa.condiciones.model.dto.MessageDTO;
 import com.axa.condiciones.model.dto.UserDTO;
-import com.axa.condiciones.model.entities.User;
+import com.axa.condiciones.model.entities.UserExa;
 
 @Service("userServiceImpl")
 @Transactional
@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public MessageDTO save(UserDTO userDTO) {
 		MessageDTO reponse = null;
-		User user = userBusiness.findByApUsernameAddress(userDTO.getAp(), userDTO.getUsername(), userDTO.getAddress());
+		UserExa user = userBusiness.findByApUsernameAddress(userDTO.getAp(), userDTO.getUsername(), userDTO.getAddress());
 		if(user == null) {	
 			userBusiness.save(userDTO);
 			reponse = new MessageDTO();

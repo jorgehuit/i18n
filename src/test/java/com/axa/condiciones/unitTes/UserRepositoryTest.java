@@ -8,18 +8,18 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.axa.condiciones.model.dto.ExecutionContextDTO;
-import com.axa.condiciones.model.entities.User;
+import com.axa.condiciones.model.entities.UserExa;
 
 import lombok.extern.log4j.Log4j;
 
 @Log4j
 public class UserRepositoryTest {
-	Map<Long, User> mapSaveUser = new HashMap<Long, User>(); 
+	Map<Long, UserExa> mapSaveUser = new HashMap<Long, UserExa>(); 
 	
 	@Test
 	public void saveUserEntity() {
 		log.info("Entramos al test saveUserEntity");
-		User user = new User();
+		UserExa user = new UserExa();
 		user.setAddress("address");
 		user.setAp("App");
 		user.setEmail("email");
@@ -35,7 +35,7 @@ public class UserRepositoryTest {
 	public void findByAp() {
 		
 		log.info("Entramos al test findByAp");
-		User user = new User();
+		UserExa user = new UserExa();
 		user.setAddress("address");
 		user.setAp("App");
 		user.setEmail("email");
@@ -46,7 +46,7 @@ public class UserRepositoryTest {
 		
 		Assert.assertNotNull(mapSaveUser);
 		
-		User userRecovery = mapSaveUser.get(1L);
+		UserExa userRecovery = mapSaveUser.get(1L);
 		
 		Assert.assertNotNull(userRecovery);
 		Assert.assertNotNull(userRecovery.getAp());
@@ -60,7 +60,7 @@ public class UserRepositoryTest {
 	@Test
 	public void modifyUserEntity() {
 		log.info("Entramos al test modifyUserEntity");
-		User user = new User();
+		UserExa user = new UserExa();
 		user.setAddress("address");
 		user.setAp("App");
 		user.setEmail("email");
@@ -71,7 +71,7 @@ public class UserRepositoryTest {
 		
 		Assert.assertNotNull(mapSaveUser);
 		
-		User userRecovery = mapSaveUser.get(1L);
+		UserExa userRecovery = mapSaveUser.get(1L);
 		
 		userRecovery.setAddress("new address");
 		userRecovery.setAp("new App");
@@ -87,7 +87,7 @@ public class UserRepositoryTest {
 	@Test
 	public void deleteUserEntity() {
 		log.info("Entramos al test deleteUserEntity");
-		User user = new User();
+		UserExa user = new UserExa();
 		user.setAddress("address");
 		user.setAp("App");
 		user.setEmail("email");
@@ -98,12 +98,12 @@ public class UserRepositoryTest {
 		
 		Assert.assertNotNull(mapSaveUser);
 		
-		User userRecovery = mapSaveUser.get(1L);
+		UserExa userRecovery = mapSaveUser.get(1L);
 		Assert.assertNotNull(userRecovery);
 		
 		mapSaveUser.remove(1L);
 		
-		User userRecovery2 = mapSaveUser.get(1L);
+		UserExa userRecovery2 = mapSaveUser.get(1L);
 		
 		Assert.assertNull(userRecovery2);
 		
